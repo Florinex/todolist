@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODO list</title>
+</head>
+
+
+<body>
+  <h1>TODO list</h1>
+  <input id = "input" type="text">
+  <button id = "addBtn" onclick="addItem()">Add</button>
+  <h1 id = todoList></h1>
+
+
+<script type ="text/javascript">
+var input = document.getElementById('input')
+var todoElement = document.getElementById('todoList')
+
+  //localStorage
+var dataString = localStorage.getItem('localKey')
+  
+  if (dataString) {
+  todoList = JSON.parse(dataString)
+  render()
+  } else {
+    todoList = [];
+  }
+
+  //sessionStorage
+  input.addEventListener('change', () => {
+    sessionStorage.setItem('sessionKey', input.value)
+  })
+  input.value = sessionStorage.getItem('sessionKey')
+  //Delete button
+  todoElement.addEventListener("click", onClick)
+function onClick(e) {
+  var deleteBtn = event.target;
+  var index = parseInt(deleteBtn.dataset.id)
+  todoList.splice(index, 1)
+  render()
+  localStorage.setItem('localKey', JSON.stringify(todoList))
+}
+
+//Add button
+  function addItem() {
+    if (input.value) {
+    var newItem = input.value;
+    todoList.push(newItem)
+    render()
+    input.value = '';
+    //store data
+    localStorage.setItem('localKey', JSON.stringify(todoList))
+    }
+  }
+
+  //Enter pressed
+  input.addEventListener('keypress', (enter) => {
+    if (enter.key === "Enter") {
+      enter.preventDefault()
+      document.getElementById('addBtn').click()
+    }
+  })
+
+  //render
+function render() {
+  var content = todoList.map((item, index) => {
+  return '<li>' + item + ' <button data-id ='+ index + '>Delete</Delete></li>';
+})
+todoElement.innerHTML = content.join('')
+}
+</script>
+  
+
+
+  <button onclick="reset()">Reset</button>
+  <script type ="text/javascript">
+    function reset() {
+      todoList = [];
+      render();
+    };
+  </script>
+</body>
+
+</html>
