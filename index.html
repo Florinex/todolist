@@ -69,18 +69,23 @@ function render() {
   var content = todoList.map((item, index) => {
   return '<li>' + item + ' <button data-id ='+ index + '>Delete</Delete></li>';
 })
+  content.unshift("<ol>");
+  content.push("</ol>");
 todoElement.innerHTML = content.join('')
 }
 </script>
-  
-
 
   <button onclick="reset()">Reset</button>
   <script type ="text/javascript">
     function reset() {
-      todoList = [];
-      render();
-    };
+      let warn = "Do you want to reset?";
+      if (confirm(warn) == true) {
+        todoList = [];
+        render();
+  } else {
+     console.log("Canceled");
+  }
+}
   </script>
 </body>
 
